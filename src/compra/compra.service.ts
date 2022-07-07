@@ -53,8 +53,10 @@ export class CompraService {
 
     const qtdeParcelas = dto.qtdeParcelas;
     const valorEntrada = produto.valor;
+    console.log(valorEntrada);
 
     const numeroParcelas = valorEntrada / qtdeParcelas;
+    console.log(numeroParcelas);
 
     if (qtdeParcelas > 6) {
       const juros = valorEntrada * 0.0115;
@@ -69,6 +71,8 @@ export class CompraService {
       const montante = qtdeParcelas * taxaJurosAoMes;
       console.log(montante);
 
+      await this.prisma.compra.create({ data });
+
       return {
         message: `Valor Total do Produto com Juros: R$${montante.toFixed(
           2,
@@ -77,6 +81,8 @@ export class CompraService {
         )}`,
       };
     }
+
+    await this.prisma.compra.create({ data });
 
     return {
       message: `Valor Total do Produto: R$${valorEntrada.toFixed(
