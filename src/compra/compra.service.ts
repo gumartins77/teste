@@ -20,23 +20,39 @@ export class CompraService {
       throw new NotFoundException('Nenhum produto encontrado!');
     }
 
-    return produtos
+    return produtos;
   }
 
-  async create(dto: CreateCompraDto) {
-    
+  async findOne(produtoId: string) {
+    const produto = await this.prisma.produto.findUnique({
+      where: { id: produtoId },
+    });
+
+    if (!produto) {
+      throw new NotFoundException(
+        `Produto com o id '${produtoId}' não foi encontrado!`,
+      );
+    }
+
+    return produto;
+  }
+
+  async create(produtoId: string, dto: CreateCompraDto) {
+    const produto = await this.findOne(produtoId);
+    console.log(produto);
+
     const data: Prisma.CompraCreateInput = {
       produto: {
         connect: {
-          id: dto.produtoId,
+          id: produtoId,
         },
       },
       qtdeParcelas: dto.qtdeParcelas,
-      valorEntrada: dto.valorEntrada,
+      valorEntrada: produto.valor,
     };
 
     const qtdeParcelas = dto.qtdeParcelas;
-    const valorEntrada = dto.valorEntrada;
+    const valorEntrada = produto.valor;
 
     const numeroParcelas = valorEntrada / qtdeParcelas;
 

@@ -11,8 +11,13 @@ export class CompraController {
     return this.compraService.findAll();
   }
 
-  @Post()
-  create(@Body() dto: CreateCompraDto) {
-    return this.compraService.create(dto);
+  @Get(':produtoId')
+  findOne(@Param('produtoId') produtoId: string) {
+    return this.compraService.findOne(produtoId);
+  }
+
+  @Post(':produtoId')
+  create(@Param('produtoId') produtoId: string, @Body() dto: CreateCompraDto) {
+    return this.compraService.create(produtoId, dto);
   }
 }
