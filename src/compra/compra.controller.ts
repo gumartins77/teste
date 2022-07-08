@@ -8,14 +8,14 @@ import { CreateCompraDto } from './dto/create-compra.dto';
 export class CompraController {
   constructor(private readonly compraService: CompraService) {}
 
-  @Get()
+  @Get('/produtos')
   findAll() {
     return this.compraService.findAll();
   }
 
-  @Get(':produtoId')
-  findOne(@Param('produtoId') produtoId: string) {
-    return this.compraService.findOne(produtoId);
+  @Get(':produtoId/parcelas')
+  findAllParcerlasProduto(@Param('produtoId') produtoId: string) {
+    return this.compraService.findAllParcerlasProduto(produtoId);
   }
 
   @Post(':produtoId')
